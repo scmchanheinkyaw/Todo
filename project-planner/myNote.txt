@@ -1,0 +1,21 @@
+let projects = [
+    { id: 1, title: "Project Title 1", detail: "Project Detail 1"},
+    { id: 1, title: "Project Title 1", detail: "Project Detail 1"},
+    { id: 1, title: "Project Title 1", detail: "Project Detail 1"},
+]
+
+let findProject = projects.find((project) => {
+    return project.id === 1;
+});
+
+console.log(findProject); // result     { id: 1, title: "Project Title 1", detail: "Project Detail 1"},
+
+
+
+Note => find က array ထဲ မှာ ရှိတဲ့ လိုချင်တဲ့ object ကို ပဲ return ပြန်ပေးတယ်.
+filter နဲ့ map နဲ့ က array တစ်ခု return ပြန် ပေးတယ်။
+
+======================================================================
+computed property က function လိုရေးလို့ရပြီး data လို ပြန် ခေါသုံးလို့ရတယ်။
+function လို ရေးလို့ရလို့ သူ့ထဲမှာ condition တွေ စစ်လို့ ရတယ်။
+======================================================================
