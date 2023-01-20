@@ -3,13 +3,15 @@
   <form @submit.prevent="registerUser">
     <label>User Name</label>
     <input type="name" v-model="name" />
-    <span class="errMessage" @show="nameError">{{ nameError }}</span>
+    <span class="errMessage" v-if="error.name">{{ error.name[0] }}</span>
     <label>User Email</label>
     <input type="email" v-model="email" />
-    <span class="errMessage" @show="emailError">{{ emailError }}</span>
+    <span class="errMessage" v-if="error.email">{{ error.email[0] }}</span>
     <label>User Password</label>
     <input type="password" v-model="password" />
-    <span class="errMessage" @show="passwordError">{{ passwordError }}</span>
+    <span class="errMessage" v-if="error.password">{{
+      error.password[0]
+    }}</span>
     <button>Register</button>
   </form>
 </template>
@@ -23,53 +25,32 @@ export default {
       name: "",
       email: "",
       password: "",
-      nameError: "",
       emailError: "",
-      passwordError: "",
+      error: {},
     };
   },
   methods: {
     async registerUser() {
-      if (this.name == "" || this.email == "" || this.password == "") {
-        if (this.name == "") {
-          this.nameError = "The name field is required!";
-        } else {
-          this.nameError = "";
-        }
-        if (this.email == "") {
-          this.emailError = "The email field is required!";
-        } else {
-          this.emailError = "";
-        }
-        if (this.password == "") {
-          this.passwordError = "The password field is required!";
-        } else {
-          this.passwordError = "";
-        }
-        return;
-      }
-
       const res = await axios.post(`${api_url}/register`, {
         name: this.name,
         email: this.email,
         password: this.password,
       });
 
-      const { data } = res.data;
-
-      if (data == "Email is already register") {
-        this.emailError = "Email is already register";
-        return;
+      const { data, success } = res.data;
+      if (success == false) {
+        this.error = data;
       } else {
-        this.emailError = "";
+        localStorage.setItem("auth", JSON.stringify(data));
+        this.$root.user = data;
+        this.$router.push({
+          name: "home",
+        });
+        window.toaster.success("Welcome! Register Success", {
+          position: "top-right",
+          duration: 3000,
+        });
       }
-
-      localStorage.setItem("auth", JSON.stringify(data));
-      this.$root.user = data;
-      this.$router.push({
-        name: "home",
-      });
-      alert("Register Success");
     },
   },
 };

@@ -3,10 +3,12 @@
   <form @submit.prevent="loginUser">
     <label>User Email</label>
     <input type="email" v-model="email" />
-    <span class="errMessage" @show="emailError">{{ emailError }}</span>
+    <span class="errMessage" v-if="error.email">{{ error.email[0] }}</span>
     <label>User Password</label>
     <input type="password" v-model="password" />
-    <span class="errMessage" @show="passwordError">{{ passwordError }}</span>
+    <span class="errMessage" v-if="error.password">{{
+      error.password[0]
+    }}</span>
     <button>Login</button>
   </form>
 </template>
@@ -21,6 +23,7 @@ export default {
       password: "",
       emailError: "",
       passwordError: "",
+      error: {},
     };
   },
   methods: {
@@ -29,42 +32,27 @@ export default {
         email: this.email,
         password: this.password,
       });
-      const { data } = res.data;
+      const { data, success } = res.data;
 
-      if (this.email == "" || this.password == "") {
-        if (this.email == "") {
-          this.emailError = "The email field is required!";
-        } else {
-          this.emailError = "";
+      if (success == false) {
+        this.error = data;
+        if (data == "wrong_email" || data == "wrong_password") {
+          window.toaster.error("You are not a valid user!.", {
+            position: "top-right",
+            duration: 3000,
+          });
+          return;
         }
-        if (this.password == "") {
-          this.passwordError = "The password field is required!";
-        } else {
-          this.passwordError = "";
-        }
-        return;
-      }
-
-      if (data == "wrong_email" || data == "wrong_password") {
-        if (data == "wrong_email") {
-          this.emailError = "Wrong Email";
-        } else {
-          this.emailError = "";
-        }
-
-        if (data == "wrong_password") {
-          this.passwordError = "Wrong Password";
-        } else {
-          this.passwordError = "";
-        }
-        return;
       } else {
         localStorage.setItem("auth", JSON.stringify(data));
         this.$root.user = data;
         this.$router.push({
           name: "home",
         });
-        alert("Login Success");
+        window.toaster.success("Welcome! Login Success", {
+          position: "top-right",
+          duration: 3000,
+        });
       }
     },
   },

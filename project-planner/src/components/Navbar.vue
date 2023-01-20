@@ -19,6 +19,10 @@ export default {
       this.$root.user = null;
       localStorage.removeItem("auth");
       this.$router.push("/login");
+      this.$toast.info("Logout! Pls login again", {
+        position: "top-right",
+        duration: 3000,
+      });
     },
   },
 };

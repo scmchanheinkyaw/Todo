@@ -28,6 +28,10 @@ export default {
     removeProject(id) {
       this.projects.splice(this.projects.indexOf(id), 1);
       localStorage.setItem("projects", JSON.stringify(this.projects));
+      window.toaster.success("Project Deleted Success!", {
+        position: "top-right",
+        duration: 3000,
+      });
     },
     deleteProject(id) {
       this.projects = this.projects.filter((project) => {

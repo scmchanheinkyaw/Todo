@@ -1,6 +1,9 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
+import Toaster from "@meforma/vue-toaster";
+import { createToaster } from "@meforma/vue-toaster";
+window.toaster = createToaster({});
 
 const myGlobalVariable = {
   data() {
@@ -17,6 +20,6 @@ const myGlobalVariable = {
     }
   },
 };
-const app = createApp(App).use(router);
+const app = createApp(App).use(Toaster).use(router);
 app.mixin(myGlobalVariable);
 app.mount("#app");

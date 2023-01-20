@@ -50,6 +50,10 @@ export default {
 
       localStorage.setItem("projects", JSON.stringify(this.projects));
       this.$router.push("/");
+      window.toaster.success("Project Updated Success!", {
+        position: "top-right",
+        duration: 3000,
+      });
     },
   },
   mounted() {

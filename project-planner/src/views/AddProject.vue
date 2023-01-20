@@ -57,6 +57,10 @@ export default {
       });
       localStorage.setItem("projects", JSON.stringify(this.projects));
       this.$router.push("/");
+      window.toaster.success("Project Created Success!", {
+        position: "top-right",
+        duration: 3000,
+      });
     },
   },
 };

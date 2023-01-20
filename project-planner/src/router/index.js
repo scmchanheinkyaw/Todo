@@ -16,8 +16,13 @@ const ifAuth = (to, from, next) => {
 const ifNotAuth = (to, from, next) => {
   const data = localStorage.getItem("auth");
   if (!data) {
-    alert("Please Login!");
-    return next({ name: "userLogin" });
+    window.toaster.info("You are not login user!", {
+      position: "top-right",
+      duration: 3000,
+    });
+    return next({
+      name: "userLogin",
+    });
   }
   return next();
 };
@@ -40,6 +45,7 @@ const routes = [
     name: "userLogin",
     component: UserLogin,
     beforeEnter: ifAuth,
+    props: true,
   },
   {
     path: "/register",
